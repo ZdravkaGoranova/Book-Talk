@@ -58,6 +58,6 @@ const bookShema = new mongoose.Schema({
 });
 
 
-const Book = mongoose.model('Crypto', bookShema);
+const Book = mongoose.model('Book', bookShema);
 
 module.exports = Book;

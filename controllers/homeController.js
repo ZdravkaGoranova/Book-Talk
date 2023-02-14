@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const Crypto = require('../models/Crypto.js');
+const Book = require('../models/Book.js');
 const cryptoServices = require('../services/cryptoServices.js');
 
 const cryptoUtils = require('../utils/cryptoUtils.js');
@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
 
 router.get('/catalog', async (req, res) => {//
 
-    let cryptos = await Crypto.find().lean();
+    let books = await Book.find().lean();
     // console.log(cryptos)
     // res.render('index', { cubes, search, difficultyFrom, diffficultyTo });
-    res.render('crypto/catalog', { cryptos });
+    res.render('book/catalog', { books });
 
 });
 router.get('/search', async (req, res) => {
