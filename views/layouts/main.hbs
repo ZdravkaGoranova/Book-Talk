@@ -20,11 +20,11 @@
                 <a href="/">Home</a>
                 <a href="/catalog">Catalog</a>
                 <!--Only for logged user-->
-                 {{#if isAuthenticated}}
+                {{#if isAuthenticated}}
                 <a href="/profile">Profile</a>
                 <a href="/create">Create Review</a>
                 <a href="/logout">Logout</a>
-                  {{else}}
+                {{else}}
                 <!--Only for guest-->
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>
@@ -37,28 +37,15 @@
     <section class="home" id="home">
 
         <div class="row">
-    
-            <div class="content">
-                <h3>BookTalk</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam deserunt nostrum accusamus. Nam alias
-                    sit necessitatibus, aliquid ex minima at!</p>
-                <a href="/catalog" class="btn">See All</a>
-            </div>
-    
-            <div class="swiper books-slider">
-                <div class="swiper-wrapper">
-                    <img src="/static/image/book-1.png" alt=""></a>
-                    <img src="/static/image/book-2.png" alt=""></a>
-                    <img src="/static/image/book-3.png" alt=""></a>
-                    <img src="/static/image/book-4.png" alt=""></a>
-                    <img src="/static/image/book-5.png" alt=""></a>
-                    <img src="/static/image/book-6.png" alt=""></a>
-                </div>
-                <img src="/static/image/stand.png" class="stand" alt="">
-            </div>
-    
+
+           
+
+            {{{body}}}
+
+           
+
         </div>
-    
+
     </section>
 
 </body>
