@@ -1,9 +1,9 @@
 
 const router = require('express').Router();
 
-const Crypto = require('../models/Crypto.js');
-const cryptoService = require('../services/cryptoServices.js');
-const cryptoUtils = require('../utils/cryptoUtils.js');
+const Book = require('../models/Book.js');
+const bookServices = require('../services/bookServices.js');
+const bookUtils = require('../utils/bookUtils.js');
 const { getErrorMessage } = require('../utils/errorUtils.js')
 const { isAuth, authentication } = require('../middlewares/authMddleware.js');
 
@@ -11,25 +11,27 @@ const { isAuth, authentication } = require('../middlewares/authMddleware.js');
 exports.getCreateCrypto = (req, res) => {//router.get('/'create',isAuth,(req, res))=>{
     console.log(req.user);
 
-    res.render('crypto/create');
+    res.render('book/create');
 };
 exports.postCreateCrypto = async (req, res) => {
     // console.log(req.body);//Object на данните от url
     console.log(req.user);
 
     try {
-        const { name, image, price, description, paymentMethod } = req.body;
+        const { title, author, image, bookReview, genre, stars, wishingList } = req.body;
 
-        let crypto = new Crypto({
-            name,
+        let book = new Book({
+            title,
+            author,
             image,
-            price,
-            description,
-            paymentMethod,
+            bookReview,
+            genre,
+            stars,
+            wishingList,
             owner: req.user._id,
         });
-        console.log(crypto);
-        await crypto.save();//запазва в db
+        console.log(book);
+        await book.save();//запазва в db
 
         //или 
         //await cryptoService.create(req.user._id, { name, image, price, description, paymentMethod })
@@ -37,24 +39,24 @@ exports.postCreateCrypto = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         //return res.render('auth/404');
-        return res.status(400).render('crypto/create', { error: getErrorMessage(error) })
+        return res.status(400).render('book/create', { error: getErrorMessage(error) })
     }
     res.redirect('/catalog');
 };
 
 exports.getDetails = async (req, res) => {//router.get('/:cryptoId/details',(req,res)=>{)
 
-    const crypto = await cryptoService.getOne(req.params.cryptoId);
+    const book = await bookServices.getOne(req.params.bookId);
     //console.log(crypto)
 
-    const isOwner = cryptoUtils.isOwner(req.user, crypto);//const isOwner = crypto.owner==req.user._id;
+    const isOwner = bookUtils.isOwner(req.user, book);//const isOwner = crypto.owner==req.user._id;
     // console.log(isOwner)
 
-    const isBuyer = crypto.buyers?.some(id => id == req.user?._id);
+    const isWished = book.wishingList?.some(id => id == req.user?._id);
 
     //crypto.paymentMethod = paymentMethodsMap[crypto.paymentMethod]
 
-    if (!crypto) {
+    if (!book) {
         return res.render('home/404');
     }
 
@@ -64,60 +66,62 @@ exports.getDetails = async (req, res) => {//router.get('/:cryptoId/details',(req
     // console.log(`=========================================`)
     // console.log(crypto.owner.toString())
 
-    res.render('crypto/details', { crypto, isOwner, isBuyer });
+    res.render('book/details', { book, isOwner, isWished });
 };
 
 exports.getEditCrypto = async (req, res) => {
 
-    const crypto = await cryptoService.getOne(req.params.cryptoId);
-    const paymentMethods = cryptoUtils.generatePaymentMethod(crypto.paymentMethod);
+    const book = await bookServices.getOne(req.params.bookId);
+    const paymentMethods = bookUtils.generatePaymentMethod(book.paymentMethod);
 
-    if (!cryptoUtils.isOwner(req.user, crypto)) {
+    if (!bookUtils.isOwner(req.user, book)) {
         return res.render('home/404')// throw new Error('You are not an owner!');
     }
 
-    res.render('crypto/edit', { crypto, paymentMethods });
+    res.render('book/edit', { book, paymentMethods });
 };
 
 exports.postEditCrypto = async (req, res) => {
 
-    const { name, image, price, description, paymentMethod } = req.body
+    const { title, author, image, bookReview, genre, stars, wishingList } = req.body
 
     try {
-        await cryptoService.update(req.params.cryptoId, {
-            name,
+        await bookServices.update(req.params.bookId, {
+            title,
+            author,
             image,
-            price,
-            description,
-            paymentMethod
+            bookReview,
+            genre,
+            stars,
+            wishingList
         })
     } catch (err) {
         console.log(err.message);
     }
-    res.redirect(`/cryptos/${req.params.cryptoId}/details`);
+    res.redirect(`/books/${req.params.bookId}/details`);
 };
 
 exports.getDeleteCrypto = async (req, res) => {
-    const crypto = await cryptoService.getOne(req.params.cryptoId);
+    const book = await bookServices.getOne(req.params.bookId);
 
-    const isOwner = cryptoUtils.isOwner(req.user, crypto);
+    const isOwner = bookUtils.isOwner(req.user, book);
     console.log(isOwner)
 
     if (!isOwner) {
         return res.render('home/404');
     }
 
-    await cryptoService.delete(req.params.cryptoId);//await cryptoService.delete(crypto);
+    await bookServices.delete(req.params.bookId);//await cryptoService.delete(crypto);
     res.redirect('/catalog');
 };
 
-exports.getBuy = async (req, res) => {//router.get('/:cryptoId/buy',isAuth)
+exports.getWish  = async (req, res) => {//router.get('/:cryptoId/buy',isAuth)
     // const crypto = await cryptoService.getOne(req.params.cryptoId);
     // const isOwner = cryptoUtils.isOwner(req.user, crypto);
     try {
-        await cryptoService.buy(req.user._id, req.params.cryptoId, req, res);
+        await bookServices.buy(req.user._id, req.params.bookId, req, res);
     } catch (error) {
         return res.status(400).render('home/404', { error: getErrorMessage(error) })
     }
-    res.redirect(`/cryptos/${req.params.cryptoId}/details`);
+    res.redirect(`/books/${req.params.bookId}/details`);
 }

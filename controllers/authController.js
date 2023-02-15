@@ -14,11 +14,14 @@ router.post('/login', async (req, res) => {
     try {
         const token = await authService.login(email, password);
 
+      
+
         res.cookie('auth', token);
         res.redirect('/')
     } catch (error) {
         return res.status(404).render('auth/login', { error: getErrorMessage(error) });
     }
+    console.log(token)
 });
 
 
@@ -27,10 +30,10 @@ router.get('/register', (req, res) => {
 
 });
 router.post('/register', async (req, res) => {
-    const { username, email, password, confirmPassword } = req.body;
+    const { email, username, password, confirmPassword } = req.body;
 
     try {
-        const token = await authService.register(username, email, password, confirmPassword);
+        const token = await authService.register(email, username, password, confirmPassword);
 
         //LOGIN automatically
         res.cookie('auth', token);

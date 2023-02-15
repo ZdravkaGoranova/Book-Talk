@@ -22,7 +22,7 @@ router.post('/create', isAuth, cryptoController.postCreateCrypto);
 
 router.get('/books/:bookId/details', cryptoController.getDetails);// router.get('/cubes/:cubeId/details', handleRequest(cubeControler.getDetails));//път към детайла
 
-router.get('/books/:bookId/buy', isAuth, cryptoController.getBuy);
+router.get('/books/:bookId/wish', isAuth, cryptoController.getWish);
 
 router.get('/books/:bookId/edit', isAuth, cryptoController.getEditCrypto);// router.get('/cubes/:cubeId/edit', isAuthenticated, handleRequest(cubeControler.getEditCube));
 router.post('/books/:bookId/edit', isAuth, cryptoController.postEditCrypto);
