@@ -23,18 +23,15 @@
     <div class="wish-books">
         <!--If there are wished books-->
 
-        {{#if books }}
+        {{#each wished}}
 
+        {{> book-card-profile}}
 
-
-        {{#each books}}
-        {{>book}}
-        {{/each}}
 
         {{else}}
         <!--If there are no wished books-->
         <h2 class="no-record-in-profile">There are no book reviews found yet...</h2>
-        {{/if}}
+        {{/each}}
 
     </div>
 </section>
