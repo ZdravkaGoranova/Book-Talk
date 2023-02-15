@@ -72,13 +72,13 @@ exports.getDetails = async (req, res) => {//router.get('/:cryptoId/details',(req
 exports.getEditCrypto = async (req, res) => {
 
     const book = await bookServices.getOne(req.params.bookId);
-    const paymentMethods = bookUtils.generatePaymentMethod(book.paymentMethod);
+    //const paymentMethods = bookUtils.generatePaymentMethod(book.paymentMethod);
 
     if (!bookUtils.isOwner(req.user, book)) {
         return res.render('home/404')// throw new Error('You are not an owner!');
     }
 
-    res.render('book/edit', { book, paymentMethods });
+    res.render('book/edit', { book });
 };
 
 exports.postEditCrypto = async (req, res) => {
@@ -119,7 +119,7 @@ exports.getWish  = async (req, res) => {//router.get('/:cryptoId/buy',isAuth)
     // const crypto = await cryptoService.getOne(req.params.cryptoId);
     // const isOwner = cryptoUtils.isOwner(req.user, crypto);
     try {
-        await bookServices.buy(req.user._id, req.params.bookId, req, res);
+        await bookServices.wish(req.user._id, req.params.bookId, req, res);
     } catch (error) {
         return res.status(400).render('home/404', { error: getErrorMessage(error) })
     }

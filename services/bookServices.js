@@ -20,11 +20,11 @@ exports.getAll = () => Book.find({}).lean();
 
 exports.create = (ownerId, cryptoData) => Book.create({ ...cryptoData, owner: ownerId });
 
-exports.getOne = (cryptoId) => Book.findById(cryptoId).lean();
+exports.getOne = (bookId) => Book.findById(bookId).lean();
 
-exports.update = (cryptoId, data) => Book.findByIdAndUpdate(cryptoId, data, { runValidators: true });
+exports.update = (bookId, data) => Book.findByIdAndUpdate(bookId, data, { runValidators: true });
 
-exports.buy = async (userId, bookId, req, res) => {
+exports.wish = async (userId, bookId, req, res) => {
     const book = await Book.findById(bookId);
     const isOwner = book.owner == req.user._id;
     const isWish  = book.wishingList?.some(id => id == req.user?._id);
@@ -44,5 +44,5 @@ exports.buy = async (userId, bookId, req, res) => {
     //или Crypto.findByIdAndUpdate(cryptoId, { $push: { buyers: userId } })
 };
 
-exports.delete = (cryptoId) => Book.findByIdAndDelete(cryptoId);
+    exports.delete = (cryptoId) => Book.findByIdAndDelete(cryptoId);
 
