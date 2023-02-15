@@ -95,8 +95,10 @@ exports.postEditCrypto = async (req, res) => {
             stars,
             wishingList
         })
-    } catch (err) {
-        console.log(err.message);
+    } catch (error) {
+        // console.log(error.message);
+        return res.status(400).render('book/edit', { error: getErrorMessage(error) })
+
     }
     res.redirect(`/books/${req.params.bookId}/details`);
 };
@@ -115,7 +117,7 @@ exports.getDeleteCrypto = async (req, res) => {
     res.redirect('/catalog');
 };
 
-exports.getWish  = async (req, res) => {//router.get('/:cryptoId/buy',isAuth)
+exports.getWish = async (req, res) => {//router.get('/:cryptoId/buy',isAuth)
     // const crypto = await cryptoService.getOne(req.params.cryptoId);
     // const isOwner = cryptoUtils.isOwner(req.user, crypto);
     try {
