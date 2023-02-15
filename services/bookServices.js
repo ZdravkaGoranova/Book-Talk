@@ -24,10 +24,12 @@ exports.getOne = (bookId) => Book.findById(bookId).lean();
 
 exports.update = (bookId, data) => Book.findByIdAndUpdate(bookId, data, { runValidators: true });
 
+exports.delete = (cryptoId) => Book.findByIdAndDelete(cryptoId);
+
 exports.wish = async (userId, bookId, req, res) => {
     const book = await Book.findById(bookId);
     const isOwner = book.owner == req.user._id;
-    const isWish  = book.wishingList?.some(id => id == req.user?._id);
+    const isWish  = book.wishingList?.filter(id => id == req.user?._id);
 
     if (isOwner) {
         return res.render('home/404');
@@ -44,5 +46,26 @@ exports.wish = async (userId, bookId, req, res) => {
     //или Crypto.findByIdAndUpdate(cryptoId, { $push: { buyers: userId } })
 };
 
-    exports.delete = (cryptoId) => Book.findByIdAndDelete(cryptoId);
+
+// exports.wish = async (userId, bookId, req, res) => {
+//     const book = await Book.findById(bookId);
+//     const isOwner = book.owner == req.user._id;
+//     const isWish  = book.wishingList?.some(id => id == req.user?._id);
+
+//     if (isOwner) {
+//         return res.render('home/404');
+//         //throw new Error ('You is Owner')
+//     }
+//     if (isWish) {
+//         return res.render('home/404');
+//         // throw new Error ('You already bought these crypto coins.')
+//     }
+
+//     book.wishingList.push(userId);
+//     return await book.save();
+//     //console.log(crypto.buyers)
+//     //или Crypto.findByIdAndUpdate(cryptoId, { $push: { buyers: userId } })
+// };
+
+   
 

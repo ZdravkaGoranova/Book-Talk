@@ -7,6 +7,8 @@ const bookUtils = require('../utils/bookUtils.js');
 const { getErrorMessage } = require('../utils/errorUtils.js')
 const { isAuth, authentication } = require('../middlewares/authMddleware.js');
 
+const { ObjectId } = require('mongodb');
+
 
 exports.getCreateCrypto = (req, res) => {//router.get('/'create',isAuth,(req, res))=>{
     console.log(req.user);
@@ -126,4 +128,26 @@ exports.getWish = async (req, res) => {//router.get('/:cryptoId/buy',isAuth)
         return res.status(400).render('home/404', { error: getErrorMessage(error) })
     }
     res.redirect(`/books/${req.params.bookId}/details`);
+}
+
+
+exports.getProfile = async (req, res) => {
+   
+    try {
+        const userI = req.user._id;
+        const user = req.user;
+        let books = await Book.find().lean();
+        // const wishArray  = books.wishingList?.filter(id => id == req.user?._id);
+
+       //const filteredArray = books.filter(book => book.wishingList.includes(new ObjectId('req.user._id')));
+       const filteredArray = books.filter(book => book.wishingList.includes('req.user._id'));
+
+        console.log(req.user._id)
+        console.log(filteredArray);
+
+        res.render('book/profile', { user, books });
+    } catch (error) {
+
+        return res.status(400).render('home/404', { error: getErrorMessage(error) })
+    }
 }
