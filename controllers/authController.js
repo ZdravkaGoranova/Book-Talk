@@ -13,14 +13,14 @@ router.post('/login', async (req, res) => {
 
     try {
         const token = await authService.login(email, password);
-
+        console.log(token)
 
         res.cookie('auth', token);
         res.redirect('/')
     } catch (error) {
         return res.status(404).render('auth/login', { error: getErrorMessage(error) });
     }
-    console.log(token)
+ 
 });
 
 
