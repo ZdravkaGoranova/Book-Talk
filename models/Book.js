@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const bookShema = new mongoose.Schema({
+const bookSchema = new mongoose.Schema({
     title: {
         type: String,
         minLength: [2, 'Title should be at least two characters!'],
@@ -58,6 +58,6 @@ const bookShema = new mongoose.Schema({
 });
 
 
-const Book = mongoose.model('Book', bookShema);
+const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
