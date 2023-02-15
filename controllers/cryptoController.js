@@ -53,7 +53,7 @@ exports.getDetails = async (req, res) => {//router.get('/:cryptoId/details',(req
     // console.log(isOwner)
 
     const isWished = book.wishingList?.some(id => id == req.user?._id);
-    console.log(isWished)
+    //console.log(isWished)
     //crypto.paymentMethod = paymentMethodsMap[crypto.paymentMethod]
 
     if (!book) {
