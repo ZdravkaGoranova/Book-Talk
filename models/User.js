@@ -6,19 +6,32 @@ const userShema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, 'Username is required!'],
-        minLength: [4, 'Username is too short!Username should be at least five characters long'],
+        minLength: 4, 
     },
     email: {
         type: String,
+        minLength: 10, 
+
         required: [true, 'Email is required!'],
-        minLength: [10, 'Email is too short!'],
+
     },
     password: {
         type: String,
         required: [true, 'Password is required!'],
         minLength: 3,
     },
-    // }, {
+
+});
+
+//userShema.virtual('confirmPassword').set;
+
+const User = mongoose.model('User', userShema);
+
+module.exports = User;
+
+
+
+  // }, {
     //     virtuals: {
     //         confirmPassword: {
     //             set(value) {
@@ -29,10 +42,6 @@ const userShema = new mongoose.Schema({
     //         }
     //     }
 
-});
+//});
 
 //userShema.virtual('confirmPassword').set;
-
-const User = mongoose.model('User', userShema);
-
-module.exports = User;
